@@ -1,0 +1,72 @@
+package productsearch;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class productsearch {
+	public static void main(String[] args) {
+		class product {
+			String productName;
+			String productType;
+			double price;
+
+			public product(String productName, String productType, double price) {
+				this.productName = productName;
+				this.productType = productType;
+				this.price = price;
+			}
+
+			class usersearch {
+				String Name;
+				String searchText;
+				String productType;
+				Date searchDate;
+
+				public usersearch(String name, String searchText, String productType, Date searchDate) {
+					this.Name = name;
+					this.searchText = searchText;
+					this.productType = productType;
+					this.searchDate = searchDate;
+				}
+
+				public Date getSearchDate() {
+					return searchDate;
+				}
+			}
+
+			class ProductSearchApp {
+
+				public void main(String[] args) {
+
+					List<String> productTypes = Arrays.asList("Phones", "Laptops", "Cosmetics", "Home Decor", "TVs",
+							"Appliances", "Clothing", "Books", "Sports Game", "Furniture");
+					List<product> products = new ArrayList<>();
+
+					for (int i = 1; i <= 10; i++) {
+						products.add(new product("Product" + i, productTypes.get(i - 1), Math.random() * 1000));
+					}
+
+					List<String> userNames = Arrays.asList("User1", "User2", "User3", "User4", "User5");
+					List<usersearch> userSearches = new ArrayList<>();
+
+					for (String userName : userNames) {
+						for (int i = 0; i < 20; i++) {
+							String searchText = "Search" + i;
+							String productType = productTypes.get((int) (Math.random() * productTypes.size()));
+							Date searchDate = new Date(System.currentTimeMillis());
+							userSearches.add(new usersearch(userName, searchText, productType, searchDate));
+						}
+
+					}
+					String targetUser = "User1";
+					List<String> recentProductTypes = userSearches.stream()
+							.filter(search -> search.Name.equals(targetUser))
+							.sorted(Comparator.comparing(usersearch::getSearchDate).reversed()).limit(2)
+							.map(search -> search.productType).collect(Collectors.toList());
+				}
+			}
+		}
+
+	}
+}
+
